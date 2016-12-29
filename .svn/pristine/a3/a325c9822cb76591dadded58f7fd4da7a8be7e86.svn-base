@@ -1,0 +1,27 @@
+    <table border="1"     cellspacing="0"   class="table" width="100%" layoutH="138">
+
+        <tbody><volist id="vo" name="list">
+            <th colspan="8" >{$Think.session.username}-{$vo.cltime|date="Y-m-d",###}-柜员交易量</th>
+            </volist>
+        </tbody>
+        <thead>
+        <tr>
+            <!-- <th orderField="gyjg" <if condition="$_REQUEST._order eq 'gyjg'">class="{$_REQUEST._sort}"</if>>网点名称</th> -->
+            
+            <th width="70">取款金额</th>
+            <th width="120">提现订单号</th>    
+            <th width="120">账号余额</th>
+            <th width="120">交易日期</th>
+        </tr>
+        </thead>
+        <tbody>
+        <volist id="vo" name="list">
+            <tr target="sid_role" rel="">
+                <td>{$vo.bpprice}</td>
+                <td>{$vo.bpno}</td>
+                <td>{$vo.balance}</td>
+                <td>{$vo.cltime|date="Y-m-d",###}</td>
+            </tr>
+        </volist>
+        </tbody>
+    </table>

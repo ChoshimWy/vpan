@@ -1,0 +1,82 @@
+<!--<extend name="Base/common"/>-->
+
+<!--<block name="content">-->
+    <!--<link rel="stylesheet" href="__CSS__/global.css">-->
+    <!--<link rel="stylesheet" href="__CSS__/index.css">-->
+    <!--<link rel="stylesheet" href="__CSS__/pwd.css">-->
+
+
+    <!--<div style="width: auto;height:auto;background-color: #00aced">-->
+
+
+    <!--</div>-->
+    <!--&lt;!&ndash;<div class="content">&ndash;&gt;-->
+
+        <!--&lt;!&ndash;<a>saasdasdasasasds</a>&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash;<p class="yh_all">推广链接<p>&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash;<p><input  id='link' type="text" value="1" class="st"/>&nbsp;&nbsp;<button class="tjrz" id="cop" onclick="copy();">复制推广链接</button></p>&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash;<p class="form_sfrz"><img alt="二维码" src="_IMG_/qrcode.png">&ndash;&gt;&ndash;&gt;-->
+            <!--&lt;!&ndash;&lt;!&ndash;<br>&ndash;&gt;&ndash;&gt;-->
+            <!--&lt;!&ndash;&lt;!&ndash;<button class="tjrz2">分享推广链接</button>&ndash;&gt;&ndash;&gt;-->
+            <!--&lt;!&ndash;&lt;!&ndash;<br>&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+    <!--<script type="text/javascript">-->
+        <!--function copy(){-->
+            <!--var content=$('#link');//对象是多行文本框contents-->
+            <!--content.select(); //选择对象-->
+            <!--document.execCommand("Copy"); //执行浏览器复制命令-->
+            <!--$('#cop').html('已复制');-->
+        <!--}-->
+    <!--</script>-->
+    <!--<style>-->
+        <!--.yh_all{ font-size:16px; font-weight:bold; border:none;}-->
+        <!--.zl_table{ border-radius:5px; background:#fff; }-->
+        <!--.zl_table tr{ height:42px; line-height:42px;}-->
+        <!--.st{ width:50%; height:32px; line-height:32px; border:none; border:1px #d5d5d5 solid; border-radius:3px; }-->
+        <!--.tjrz{ background:none; border:none; padding:5.5px 2px; background:#ffb709; border-radius:2px; color:#fff; font-size:14px; margin-top:12px;}-->
+        <!--.tjrz2{ background:none; border:none; padding:9px 35px; background:#19b2ff; border-radius:2px; color:#fff; font-size:14px; margin-top:12px;}-->
+        <!--.form_sfrz{ background:#fcf8e3; border:1px #ebd97b solid; border-radius:5px; padding:20px 0 20px 20px; width:100%; font-size:15px; text-align:center;}-->
+    <!--</style>-->
+
+
+
+
+<!--</block>-->
+
+
+<extend name="Base/common"/>
+<block name="content">
+    <link rel="stylesheet" href="__CSS__/global.css">
+    <link rel="stylesheet" href="__CSS__/index.css">
+    <link rel="stylesheet" href="__CSS__/pwd.css">
+    <div class="wrap">
+        <div class="index" style="min-height: 891px;">
+            <header class="list-head">
+                <nav class="list-nav clearfix"> <a href="javascript:history.go(-1)" class="list-back"></a>
+                    <h3 class="list-title">修改登录密码</h3>
+                </nav>
+            </header>
+            <form id="reviseForm" class="i-form" method="post" action="{:U('User/edituser')}">
+                <ul class="form-box">
+                    <li class="f-line clearfix">
+                        <label class="f-label">当前密码</label>
+                        <input id="c-pwd" class="f-input text" type="password" maxlength="18" placeholder="请输入当前登录密码" name="upwd">
+                    </li>
+                    <li class="f-line clearfix">
+                        <label class="f-label">新密码</label>
+                        <input id="n-pwd" class="f-input text" type="password" maxlength="18" placeholder="请输入六位新密码" name="newpwd">
+                    </li>
+                    <li class="f-line clearfix">
+                        <label class="f-label">确认密码</label>
+                        <input id="r-pwd" class="f-input text" type="password" maxlength="18" placeholder="再次输入交易密码" name="mypwd">
+                    </li>
+                </ul>
+                <input type="submit" value="确 认" class="f-sub" id="send">
+            </form>
+        </div>
+    </div>
+</block>
+
+
+

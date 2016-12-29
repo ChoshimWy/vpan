@@ -1,0 +1,68 @@
+<extend name="Base/common"/>
+<block name="content">
+<link rel="stylesheet" href="__CSS__/global.css">
+<link rel="stylesheet" href="__CSS__/index.css">
+<link rel="stylesheet" href="__CSS__/pwd.css">
+<div class="wrap">
+  <div class="index" style="min-height: 891px;">
+    <header class="list-head">
+      <nav class="list-nav clearfix"> <a href="{:U('User/memberinfo')}" class="list-back"></a>
+        <h3 class="list-title">修改联系电话</h3>
+      </nav>
+    </header>
+      <ul class="form-box">
+        <li class="f-line clearfix">
+          <label class="f-label">电话</label>
+          <input style="color: #000;" id="c-pwd" class="f-input text" type="text" maxlength="18" placeholder="请输入新的电话号码" name="utle"
+          value="{$utel}">
+        </li>
+         <!-- <li class="y_ma">
+          <lable class="f_yan">验证码：</lable>
+          <input type="text"  class="f_text">
+            <input type="button" class="f_but" value="获取验证码"  id="btn" >
+        </li>  -->
+      </ul>
+      <input type="submit" value="确 认" class="f-sub" id="send">
+      
+  </div>
+</div>
+<script src="__JS__/script.js"></script>
+<script type="text/javascript">
+  $("#send").click(function(){
+    
+      var c_pwd=$("#c-pwd").val();
+      var f_text=$(".f_text").val();
+      var flag = true;
+      if(''== $.trim(c_pwd)) {
+            msg('电话号码不能为空');
+            flag=false;
+      }
+
+      if(!/^1[3|4|5|8][0-9]\d{4,8}$/.test(c_pwd)){
+            msg('请填写正确电话');
+            flag=false;    
+      }
+      if(flag == true) {
+        updatetel();      
+      }
+  });
+function updatetel(){
+          var c_pwd=$("#c-pwd").val();
+          $.ajax({
+              type:'post',
+              url:"{:U('User/editle')}",
+              data:{"utle":c_pwd},
+              success:function(data){
+                if (data==1) {
+                  msg('修改成功');
+                  window.setTimeout(function(){window.location.href="__ROOT__/index.php/Home/User/memberinfo.html";},1000);
+                }else if(data==2){
+                  msg('修改失败');
+                }
+              }
+          });
+}
+</script>
+
+</block>
+

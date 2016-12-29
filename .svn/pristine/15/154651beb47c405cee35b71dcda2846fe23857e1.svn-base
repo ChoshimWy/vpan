@@ -1,0 +1,40 @@
+    <table border="1"     cellspacing="0"   class="table" width="100%" layoutH="138">
+
+        <tbody><volist id="vo" name="list">
+            <th colspan="8" >{$Think.session.username}-{$vo.cltime|date="Y-m-d",###}-柜员交易量</th>
+            </volist>
+        </tbody>
+        <thead>
+        <tr>
+            <!-- <th orderField="gyjg" <if condition="$_REQUEST._order eq 'gyjg'">class="{$_REQUEST._sort}"</if>>网点名称</th> -->
+            
+            <th width="70">付款账号名称</th>
+            <th width="70">取款账号</th>
+            <th width="70">收款账号</th>
+            <th width="70">收款账号名称</th>
+            <th width="70">收款账户开户行名称</th>
+            <th width="120">收款行联行行号</th> 
+            <th width="70">收款行柜台编码</th>
+            <th width="70">收款账号行别标志</th>
+            <th width="70">金额</th>
+            <th width="70">币种</th>
+            <!-- <th width="120">用途</th> -->
+        </tr>
+        </thead>
+        <tbody>
+        <volist id="vo" name="list">
+            <tr target="sid_role" rel="">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{$vo.bpprice}.00</td>
+                <td>01</td>
+            </tr>
+        </volist>
+        </tbody>
+    </table>

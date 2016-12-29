@@ -1,0 +1,76 @@
+<extend name="Base/common"/>
+<block name="content">
+    <link rel="stylesheet" href="__CSS__/global.css">
+    <link rel="stylesheet" href="__CSS__/index.css">
+    <link rel="stylesheet" href="__CSS__/pwd.css">
+
+    <div class="wrap">
+        <div class="index" style="min-height: 891px;">
+            <header class="list-head">
+                <nav class="list-nav clearfix"> <a href="javascript:history.go(-1)" class="list-back"></a>
+                    <h3 class="list-title">找回密码</h3>
+                </nav>
+            </header>
+                <form id="reviseForm" class="i-form" method="post" action="{:U('User/retrieve')}" >
+                    <ul class="form-box">
+                        <li class="f-line clearfix">
+                            <label class="f-label">问题：</label>
+                            <if condition="$questionID eq '1'">
+                                <label class="f-label" id="question">你父亲的名字？</label>
+                            </if>
+                            <if condition="$questionID eq '2'">
+                                <label class="f-label" id="question">你母亲的名字？</label>
+                            </if>
+                            <if condition="$questionID eq '3'">
+                                <label class="f-label" id="question">你小学名字？</label>
+                            </if>
+
+                        </li>
+                        <li class="f-line clearfix">
+                            <label class="f-label">答案:</label>
+                            <input style="color: #000;" id="c-answer" class="f-input text" type="text" placeholder="请输入问题答案" name="answer">
+                        </li>
+                    </ul>
+                    <input type="submit" value="确认找回" class="f-sub" id='sendAnswer'>
+                </form>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+
+
+
+        $(function () {
+            $('form :input').blur(function(){
+                var $parent = $(this).parent();
+                $parent.find(".formtips").remove();
+                //验证答案是否为空
+                if( $(this).is('input[name="answer"]') ){
+                    if( this.value==""){
+                        var errorMsg = '输入的回答不能为空.';
+                        $parent.append('<input  class="f-input1 formtips onError" type="text" value="'+errorMsg+'" > ');
+                    }else{
+                        $parent.append('<input class="f-input1 formtips onSuccess" style="display:none" type="text"  > ');
+                    }
+                }
+
+            }).keyup(function(){
+                $(this).triggerHandler("blur");
+            }).focus(function(){
+                $(this).triggerHandler("blur");
+            });
+
+            //找回密码
+            $('#sendAnswer').click(function(){
+                $("form :input.text").trigger('blur');
+                var numError = $('form .onError').length;
+                if(numError){
+                    return false;
+                }
+                msg("注册成功");
+            });
+        });
+
+    </script>
+</block>

@@ -1,0 +1,79 @@
+<extend name="Base/common"/>
+<block name="content">
+<link rel="stylesheet" href="__CSS__/global.css">
+<link rel="stylesheet" href="__CSS__/account.css">
+<script id="G--xyscore-load" type="text/javascript" charset="utf-8" async="" src="__JS__/xyscore_main.js"></script>
+
+<div class="wrap">
+  <!-- <div class="index" style="min-height: 1114px;"> -->
+  <div class="index">
+  <div class="txss">
+      <div class="tx"><if condition="$suer.portrait eq ''"><img src="__IMG__/pic.gif"><else/><img src="{$suer.portrait}"></if></div>
+        <div class="gezh">
+          <div class="grzh"><span>个人账户（元）</span><p class="a-d">{$result.balance}</p></div>
+          <div class="cztz">
+
+            <a href="{:U('User/logout')}" class="acc-btn black">退出</a>
+            <a href="{:U('User/recharge')}" class="acc-btn green">充值</a>
+            <a href="{:U('User/cash')}" class="acc-btn blue">提现</a>
+            <!-- <a href="" class="acc-btn blue" id="cash";>提现</a> -->
+            <a href="{:U('Index/index')}" class="acc-btn red">首页</a>
+          </div>
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="info-box clearfix"><i class="a-3"></i>
+      <div class="info-detail clearfix"> <a href="{:U('Detailed/dtrading')}" class="acc-l">交易明细</a> </div>
+    </div>
+    <div class="info-box clearfix"><i class="a-4"></i>
+      <div class="info-detail clearfix"> <a href="{:U('Detailed/drevenue')}" class="acc-l">收支明细</a> </div>
+    </div>
+    <div class="info-box clearfix"><i class="a-1"></i>
+      <div class="info-detail clearfix"><a href="{:U('User/experiencelist')}" class="acc-l">我的体验券</a> </div>
+    </div>
+      <!-- <div class="info-box clearfix"> <i class="a-6"></i>
+          <div class="info-detail clearfix" > <a href="{:U('Broker/brokerinfo')}" class="acc-l">返佣中心</a></div>
+      </div> -->
+      <div class="info-box clearfix"><i class="a-6"></i>
+          <div class="info-detail clearfix" > <a href="{:U('User/message')}" class="acc-l">信息中心</a></div>
+      </div>
+     <div class="info-box clearfix"><i class="a-3"></i>
+      <div class="info-detail clearfix"><a href="{:U('User/editle')}" class="acc-l">联系电话</a> </div>
+    </div>
+    <div class="info-box clearfix" ><i class="a-2" ></i>
+      <div class="info-detail clearfix"><a href="{:U('User/editpwd')}" class="acc-l">修改提现密码</a> </div>
+    </div>
+     <div class="info-box clearfix"><i class="a-5"></i>
+      <div class="info-detail clearfix"><a href="{:U('User/edituser')}" class="acc-l">修改登录密码</a> </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+    $('#cash').click(function () {
+      //alert("2222222222222222222222")
+        var NowDate = new Date();
+        var H = NowDate.getHours();
+        var M = NowDate.getMinutes();
+
+        //当前时间
+        var nowtime = H*60+M;
+        //早上时间
+        var morning = 9*60;
+        //下午时间
+        var noon = 15*60;
+
+        if ((nowtime>=morning) || (nowtime<=noon)){
+             // alert("可以提现");
+              // location.href="__ROOT__/index.php/Home/User/cash.html";
+            }
+            else {
+              alert("该时间段内不可提现");
+            }
+    });
+</script>
+<!-- <script src="__JS__/jquery-2.1.1.min.js"></script>
+<script src="__JS__/script.js"></script>
+<script type="text/javascript" charset="utf-8" src="__JS__/sea.js" async=""></script> -->
+</block>
+

@@ -1,0 +1,24 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="xh/style/js/jquery.js"></script>
+<script type="text/javascript">
+	setInterval('flash_product()', 1000);
+    function flash_product(){
+     
+    	$.get("xieru.php?id=" + Math.random() , {}, function(data) {
+
+            document.getElementById('title').innerHTML=('获取'+data);
+        });
+  };
+  setInterval(function() {var now = (new Date()).toLocaleString();$('#dd').text(now);}, 1000);
+</script>
+<script>
+   setInterval("window.location.reload();",1000*60*20);
+</script>
+<h>
+	波动已经打开，请勿关闭此页面。
+</h>
+<div id="dd"></div>
+<div id="title"></div>
+ 
+ 
+ 

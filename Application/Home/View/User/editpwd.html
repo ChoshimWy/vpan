@@ -1,0 +1,73 @@
+<extend name="Base/common"/>
+<block name="content">
+<link rel="stylesheet" href="__CSS__/global.css">
+<link rel="stylesheet" href="__CSS__/index.css">
+<link rel="stylesheet" href="__CSS__/pwd.css">
+
+<div class="wrap">
+  <div class="index" style="min-height: 891px;">
+    <header class="list-head">
+      <nav class="list-nav clearfix"> <a href="{:U('User/memberinfo')}" class="list-back"></a>
+        <h3 class="list-title">修改提现密码</h3>
+      </nav>
+    </header>
+    <!-- <form id="reviseForm" class="i-form" method="post" action="{:U('User/editpwd')}"> -->
+      <ul class="form-box">
+        <li class="f-line clearfix">
+          <label class="f-label">当前密码</label>
+          <input style="color: #000;" id="c-pwd" class="f-input text" type="password" minlength="6" maxlength="6" placeholder="请输入当前提现密码" name="upwd" >
+        </li>
+        <li class="f-line clearfix">
+          <label class="f-label">新密码</label>
+          <input style="color: #000;"  id="n-pwd" class="f-input text" type="password" minlength="6" maxlength="6" placeholder="请输入六位新密码" name="newpwd">
+        </li>
+        <li class="f-line clearfix">
+          <label class="f-label">确认密码</label>
+          <input style="color: #000;"  id="r-pwd" class="f-input text" type="password" minlength="6" maxlength="6" placeholder="再次输入密码" name="mypwd">
+        </li>
+      </ul>
+      <input type="submit" value="确 认" class="f-sub" id="send">
+   <!--  </form> -->
+  </div>
+</div>
+<script src="__JS__/script.js"></script>
+<script type="text/javascript">
+  $("#send").click(function(){
+      var c_pwd=$("#c-pwd").val();
+      var n_pwd=$("#n-pwd").val();
+      var r_pwd=$("#r-pwd").val();
+      var flag = true;
+      if( ''== $.trim(c_pwd)) {
+            msg('原密码不能为空');
+            flag=false;
+      }else if( ''== $.trim(n_pwd)) {
+            msg('新密码不能为空');
+            flag=false;
+      }else if( ''== $.trim(r_pwd)) {
+           msg('确认密码不能为空');
+           flag=false;
+      }else if($.trim(n_pwd)!= $.trim(r_pwd)) {
+           msg('两次密码不一致');
+           flag=false;
+      }
+      if(flag == true) {
+              $.ajax({
+                  type:'post',
+                  url:"{:U('User/editpwd')}",
+                  data:{"upwd":c_pwd,"newpwd":n_pwd},
+                  success:function(data){
+                    if (data==1) {
+                      msg('修改成功');
+                      window.setTimeout(function(){window.location.href="__ROOT__/index.php/Home/User/memberinfo.html";},1000);
+                    }else if(data==2){
+                      msg('修改失败');
+                    }else if(data==0){
+                      msg('原密码不正确');
+                    }
+                  }
+              }); 
+      }
+  });
+</script>
+</block>
+

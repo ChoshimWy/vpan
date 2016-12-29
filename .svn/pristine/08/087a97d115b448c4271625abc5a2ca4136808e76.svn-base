@@ -1,0 +1,77 @@
+<extend name="Base/common"/>
+<block name="content">
+    <link rel="stylesheet" href="__CSS__/global.css">
+    <link rel="stylesheet" href="__CSS__/index.css">
+    <link rel="stylesheet" href="__CSS__/pwd.css">
+
+    <div class="wrap">
+        <div class="index" style="min-height: 891px;">
+            <header class="list-head">
+                <nav class="list-nav clearfix"> <a href="javascript:history.go(-1)" class="list-back"></a>
+                    <h3 class="list-title">重置密码</h3>
+                </nav>
+            </header>
+            <form id="reviseForm" class="i-form" method="post" action="{:U('User/resetPasswod')}" >
+                <ul class="form-box">
+                    <li class="f-line clearfix">
+                        <label class="f-label">新密码：</label>
+                        <input id="c-pwd" class="f-input text" type="password" maxlength="6" placeholder="请输入6位数的密码" name="pwd">
+                    </li>
+                    <li class="f-line clearfix">
+                        <label class="f-label">确认密码:</label>
+                        <input id="c-confirmPwd" class="f-input text" type="password" maxlength="6" placeholder="请再次确认密码" name="confirmPwd">
+                    </li>
+                </ul>
+                <input type="submit" value="确认重置" class="f-sub" id='sendPwd'>
+            </form>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+
+
+        $(function () {
+            $('form :input').blur(function(){
+                var $parent = $(this).parent();
+                $parent.find(".formtips").remove();
+                //shezhe重置密码
+                if( $(this).is('input[name="pwd"]') ){
+                    if( this.value==""){
+                        var errorMsg = '密码不能为空.';
+                        $parent.append('<input  class="f-input1 formtips onError" type="text" value="'+errorMsg+'" > ');
+                    }else{
+                        $parent.append('<input class="f-input1 formtips onSuccess" style="display:none" type="text"  > ');
+                    }
+                }
+
+                //确认密码验证
+                if( $(this).is('input[name="confirmPwd"]') ){
+                    if( this.value!=$('#c-pwd').val()){
+                        var errorMsg = '两次密码不一样.';
+                        $parent.append('<input  class="f-input1 formtips onError" type="text" value="'+errorMsg+'" > ');
+                    }else{
+                        $parent.append('<input class="f-input1 formtips onSuccess" style="display:none" type="text"  > ');
+                    }
+                }
+
+            }).keyup(function(){
+                $(this).triggerHandler("blur");
+            }).focus(function(){
+                $(this).triggerHandler("blur");
+            });
+
+            //找回密码
+            $('#sendPwd').click(function(){
+                $("form :input.text").trigger('blur');
+                var numError = $('form .onError').length;
+                if(numError){
+//                    msg("jashduadi");
+                    return false;
+                }
+                msg("注册成功");
+            });
+        });
+
+    </script>
+</block>

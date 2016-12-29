@@ -1,0 +1,163 @@
+<extend name="Base/common"/>
+<block name="content">
+			
+	<!-- this page specific styles -->
+	<link rel="stylesheet" href="__CSS__/compiled/article.css" type="text/css" media="screen" />
+    <div class="container-fluid">
+        <div id="pad-wrapper" class="users-list">
+            <if condition="$otype eq '4'">
+            <div class="row-fluid header">
+            	<!-- <script type="text/javascript">
+            		var dqurl = window.location.href;
+            		if(dqurl.indexOf("oldlist")>0){
+            			document.writeln("<h3>优惠卷管理&nbsp;>&nbsp;历史优惠卷</h3>");
+            		}else{
+            			document.writeln("<h3>优惠卷管理&nbsp;>&nbsp;优惠卷列表</h3>");
+            		}
+            	</script> -->
+                <h3>系统信息管理&nbsp;>&nbsp;系统信息列表</h3>
+                <div class="span9 pull-right">
+                    <!--<input type="text" class="span5 search" placeholder="请输入商品名称查找..." />-->                    
+                </div>
+            </div>
+            
+            <script type="text/javascript">
+        		
+        			document.writeln("<div class='row-fluid header head2'><a href=\"{:U('Index/systemadd')}\" class=\"btn-flat success\">添加系统信息</a></div>");
+        		
+        	</script>
+            <!-- Users table -->
+            <form  action="{:U('Coupons/cpdel')}" method="post" name="del">
+            <div class="row-fluid table">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="span2 sortable">
+								<!-- <input type="checkbox"> -->
+                                id
+                            </th>
+                        
+                            <th class="span2 sortable">
+                                <span class="line"></span>信息标题
+                            </th>
+						
+                            <th class="span4 sortable">
+                                <span class="line"></span>信息内容
+                            </th>
+                            <th class="span4 sortable">
+                                <span class="line"></span>添加时间
+                            </th>
+                           
+							<th class="span2 sortable">
+                                <span class="line"></span>操作
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="ajaxback">
+                   
+                    <volist name="coulist" id="list">
+                    <tr class="first">
+						<td>
+							{$list['mid']}
+                            
+                        </td>
+                        <td>
+                            {$list['title']}
+                           
+                            
+                        </td>
+                        <td>
+                            {$list['content']|substr=0,30}
+                            
+                            
+                        
+                        </td>
+                        <td>
+                        {$list['settime']|date='Y-m-d H:i:s',###}                                                    
+                        </td>
+                        <td>
+							<ul class="actions">
+								<li><a href="{:U('Index/systemedit',array('mid'=>$list['mid']))}">修改</a></li>
+								<li><a href="{:U('Index/systemdel',array('mid'=>$list['mid']))}" onclick="if(confirm('确定要删除吗?')){return true;}else{return false;}">删除</a></li>
+							</ul>
+                        </td>
+                    </tr>
+                    </volist>
+                    </tbody>
+                </table>
+				<!-- <div class="qjcz">
+					<a id="checkall">全选</a>
+					<a id="checkallno">全不选</a>
+					<a id="check_revsern">反选</a>
+					<input type="submit" id='sbtn' onclick ="return valid();" value="批量删除">
+				</div> -->
+            </div>
+            </form>
+            <div class="pagination pull-right">
+                <ul>
+                    {$page}
+                </ul>
+            </div>
+            <!-- end users table -->
+                <else/>
+                <h3><br>您尚未拥有该权限</h3>
+            </if>
+        </div>
+    </div>
+</div>
+<!-- end main container -->
+
+
+<!-- scripts -->
+<script src="__JS__/jquery-latest.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+<script src="__JS__/theme.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	var eqli = $("#dashboard-menu").children().eq(11);
+	eqli.attr('class','active');
+	$("#dashboard-menu .active .submenu").css("display","block");
+	
+	$("#checkall").click(function(){
+	    $("input[name='eid[]']").each(function(){
+	        this.checked = true;
+	    });
+	});
+	 
+	$("#checkallno").click(function(){
+	    $("input[name='eid[]']").each(function(){
+	        this.checked = false;
+	    })
+	});
+	 
+	$("#check_revsern").click(function(){
+	    $("input[name='eid[]']").each(function(){
+	        if (this.checked) {
+	            this.checked = false;
+	        }
+	        else {
+	            this.checked = true;
+	        }
+	    });
+	});
+	
+	$("input[type='checkbox']").click(function(){
+		$("#sbtn").attr("onclick","if(confirm('确定要删除吗?请谨慎操作')){return true;}else{return false;}");
+	})
+});
+
+function valid(){
+	  var check = "";
+      $("input:checkbox[name='eid[]']:checked").each(function() {
+			check += $(this).val();
+	  });
+      if(check==''){
+      	alert('请选择要删除的产品');
+      	return false;
+      	}else{ 
+      	return true;
+      }	
+ };
+
+</script>
+</block>

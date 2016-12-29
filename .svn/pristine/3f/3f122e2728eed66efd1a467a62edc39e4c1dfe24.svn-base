@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>使用说明</title>
+    <link rel="stylesheet" href="__CSS__/font-awesome.min.css">
+    <script src="__JS__/jquery-2.1.1.min.js"></script>
+    <style>
+        body{text-align:center; color:#000;background:#eee; font-family: 微软雅黑; }
+        h4,h5,h6,body{margin:0;padding:0}
+        a{color:#333;text-decoration: none;}
+        body{height:auto;}
+        .box1{
+            height:40px;
+            width:auto;
+            background:#d82c2c;
+            line-height:40px;
+            margin:0px auto;
+            color:#fff;
+            margin-top:30px;
+        }
+        .box2{
+            height:auto;
+            width:230px;
+            border:1px solid #eee;
+            margin:0 auto;
+            text-align:left;
+        }
+
+        p{font-size:12px;margin-top:10px;padding:0}
+        span{font-size:16px;margin:0;padding:0}
+        #goTopBtn {
+            position: fixed; text-align: center; width:30px; bottom: 25px; height: 33px; font-size: 12px; cursor: pointer; right: 5px; _position: absolute; _right: auto;background:#eee;}
+        h5 b{ margin-left: 75px;font-weight:normal}
+
+        .list{
+            width:100%;
+            height:45px;
+            line-height:45px;
+            margin: auto;
+            text-align: left;
+           border-bottom:1px solid #a09e9e;
+            position: relative;
+            font-size: 16px; font-weight: normal;
+        }
+            .fa-chevron-right{
+                position:absolute;
+                right:20px;
+                top:14px;
+                color:#000;
+            }
+        .fa-usd, .fa-home,.fa-gavel,.fa-money,.fa-jpy,.fa-calculator,.fa-credit-card,.fa-keyboard-o,.fa-key,.fa-unlock
+        ,.fa-sticky-note-o,.fa-list-ol{
+        position:absolute;
+        left:0;
+        width: 55px; height: 45px;
+         border-bottom: 1px solid #fff;
+        line-height: 40px; color: #fff; text-align: center;}
+        .fa-sticky-note-o,.fa-list-ol,.fa-jpy{ background-color: #ce9722;}
+        .fa-usd,.fa-unlock,.fa-credit-card{ background-color: #a5993b;}
+        .fa-home,.fa-key,.fa-money{background-color: #f17304;}
+        .fa-gavel,.fa-calculator{background-color: #f7e90a;}
+        .fa-keyboard-o,.fa-list-ol{background-color: #f68a48;}
+
+        /*手风琴样式*/
+        .main{margin-bottom:30px}
+        .main,.VerticalMenu{
+            width:100%;
+        }
+        .VerticalMenu > div > h5:first-child > i:last-child {
+            transform: rotate(0deg);
+            transition: transform 0.4s linear;
+        }
+        .VerticalMenu > div > div:last-child {
+            display: none;
+        }
+        .VerticalMenu > div:last-child::after {
+            display: block;
+            clear: both;
+        }
+        /**/
+    </style>
+</head>
+<body>
+<div class="box1" style="position:relative;margin-top:0px;"><a href="{:U('Index/index')}"><img src="__IMG__/jiantou.png"  style="width:30px;position:absolute;left:10px;top:7px"/></a><h4>中南体验盘使用说明</h4></div>
+
+<div class="VerticalMenu">
+
+    <div>
+        <h5 class="list" style="margin-top:10px"><i class="fa fa-usd fa-2x" aria-hidden="true"></i><b>1. 充值</b><i class="fa fa-chevron-right" aria-hidden="true"></i></h5>
+        <div name="xz" class="main">
+            <div class="box1"><span>1.充值</span></div>
+            <div class="box2">
+                <p>操作流程：进入首页> 点击充值>输入充值金额>点击立即充值>点击立即支付,即可完成充值。如下图所示：</p>
+            </div>
+            <img src="__IMG__/111.png" style="width:200px;margin-top:10px" >
+            <img src="__IMG__/chongzhi.png" style="width:200px;margin-top:10px" >
+
+        </div>
+    </div>
+    <!--充值结束-->
+    <div>
+        <h5 class="list"><i class="fa fa-home fa-2x" aria-hidden="true"></i><b>2. 建仓</b><i class="fa fa-chevron-right" aria-hidden="true"></i></h5>
+        <div  name="xz" class="main">
+            <div class="box1"><span>2.建仓</span></div>
+            <div class="box2">
+                <p>操作流程：进入首页>点击（买涨/买跌）>选择购买数量>点击确认，即可完成建仓。如下图所示：</p>
+            </div>
+            <img src="__IMG__/maizhang.png" style="width:200px;margin-top:10px" >
+            <img src="__IMG__/tiyanjuan2.png" style="width:200px;margin-top:10px" >
+
+        </div>
+    </div>
+    <!--建仓结束-->
+
+    <div>
+        <h5 class="list"><i class="fa fa-gavel fa-2x" aria-hidden="true"></i> <b>3. 平仓</b><i class="fa fa-chevron-right" aria-hidden="true"></i></h5>
+        <div  name="xz" class="main">
+            <div class="box1"><span>3.平仓</span></div>
+            <div class="box2">
+                <p>操作流程：进入首页>选择您需要操作的订单>点击查看订单>点击立即平仓，即可完成此订单的平仓。如下图所示：</p>
+            </div>
+            <img src="__IMG__/chakandingdan.png" style="width:200px;margin-top:10px" >
+            <img src="__IMG__/pingchang.png" style="width:200px;margin-top:10px" >
+        </div>
+    </div>
+    <!--平仓结束-->
+
+
+    <div>
+        <h5 class="list"><i class="fa fa-jpy fa-2x" aria-hidden="true"></i><b>4.手续费</b><i class="fa fa-chevron-right" aria-hidden="true"></i></h5>
+        <div  name="xz" class="main">
+            <div class="box1"><span>4.手续费</span></div>
+        <div class="box2">
+            <p>每当客户购买1手产品，就需要支付1元的手续费。若购买10手，则需要支付10元的手续费，以此类推。平仓不需要支付任何手续费。</p>
+        </div>
+        <img src="__IMG__/shouxufei.png" style="width:200px;margin-top:10px" >
+        </div>
+    </div>
+    <!--手续费结束-->
+
+    <div>
+        <h5 class="list"><i class="fa fa-calculator fa-2x" aria-hidden="true"></i> <b>5.平仓资金计算</b><i class="fa fa-chevron-right" aria-hidden="true"></i></h5>
+        <div  name="xz" class="main">
+            <div class="box1"><span>5.平仓资金计算</span></div>
+            <div class="box2">
+                <p>平仓所得金额=（当前市场建仓价-需平仓订单购买时的建仓价）x 需平仓订单的购买手数+需平仓订单的建仓金额（注：购买时产生的手续费不列入计算）</p>
+            </div>
+            <img src="__IMG__/shouzhi.png" style="width:200px;margin-top:10px" >
+        </div>
+    </div>
+    <!--平仓资金计算-->
+
+    <div>
+        <h5 class="list"><i class="fa fa-credit-card fa-2x" aria-hidden="true"></i><b>6.提现</b><i class="fa fa-chevron-right" aria-hidden="true"></i> </h5>
+        <div  name="xz" class="main">
+            <div class="box1"><span>6.提现</span></div>
+            <div class="box2">
+                <p>操作流程：进入首页>点击左上角按钮进入菜单栏>点击提现>按要求输入相关信息，即可完成提现。如下图所示：</p>
+            </div>
+            <img src="__IMG__/caidan.png" style="width:200px;margin-top:10px" >
+            <img src="__IMG__/tixian2.png" style="width:200px;margin-top:10px" >
+        </div>
+    </div>
+    <!--提现结束-->
+
+    <div>
+        <h5 class="list"><i class="fa fa-key fa-2x" aria-hidden="true"></i><b>7.登录密码</b><i class="fa fa-chevron-right" aria-hidden="true"></i></h5>
+        <div  name="xz" class="main">
+            <div class="box1"><span>7.登录密码</span></div>
+            <div class="box2">
+                <p>操作流程：进入首页>点击左上角按钮进入菜单栏>点击个人中心>点击修改登录密码>按要求输入相关信息，即可完成修改（密码长度必须为6位）。如下图所示：</p>
+            </div>
+            <img src="__IMG__/gerenzhongxin2.png" style="width:200px;margin-top:10px" >
+            <img src="__IMG__/xiugaimima2.png" style="width:200px;margin-top:10px" >
+        </div>
+    </div>
+    <!--登录密码结束-->
+
+    <div>
+        <h5 class="list"><i class="fa fa-unlock fa-2x" aria-hidden="true"></i><b>8.提现密码</b><i class="fa fa-chevron-right" aria-hidden="true"></i></h5>
+        <div  name="xz" class="main">
+            <div class="box1"><span>8.提现密码</span></div>
+            <div class="box2">
+                <p>操作流程：进入首页>点击左上角按钮进入菜单栏>点击个人中心>点击修改提现密码>按要求输入相关信息，即可完成修改（密码长度必须为6位）。如下图所示：</p>
+            </div>
+            <img src="__IMG__/gerenzhongxin2.png" style="width:200px;margin-top:10px" >
+            <img src="__IMG__/xiugaimima.png" style="width:200px;margin-top:10px" >
+        </div>
+    </div>
+    <!--提现密码结束-->
+
+    <div>
+        <h5 class="list"><i class="fa fa-sticky-note-o fa-2x" aria-hidden="true"></i><b>9.体验券</b><i class="fa fa-chevron-right" aria-hidden="true"></i></h5>
+        <div  name="xz" class="main">
+            <div class="box1"><span>9.体验券</span></div>
+            <div class="box2">
+                <p> 1.新注册的用户，可以获得3张体验券;<br/>
+                    2.体验券必须在有效期内使用；<br/>
+                    3.体验券只能在建仓交易时使用；<br/>
+                    4.使用体验券建单时，无需支付手续费；<br/>
+                    5.使用体验券建单时，订单手数必须和使用体验券的数量一致；<br/>
+                    6.已使用体验卷的订单平仓时，盈利，则盈利部分归用户；亏损，则用户无任何损失
+                </p>
+            </div>
+            <img src="__IMG__/tiyanjuan.png" style="width:200px;margin-top:10px" >
+        </div>
+    </div>
+    <!--体验卷结束-->
+
+    <div>
+        <h5 class="list"><i class="fa fa-list-ol fa-2x" aria-hidden="true"></i><b>10.排行榜</b><i class="fa fa-chevron-right" aria-hidden="true"></i></h5>
+        <div  name="xz" class="main">
+            <div class="box1"><span>10.排行榜</span></div>
+            <div class="box2">
+                <p>操作流程：进入首页>点击左上角按钮进入菜单栏>点击排行榜>（排行榜的作用：按净赚金额数目从高到低排列，只显示前10名用户的相关信息）。</p>
+                <img src="__IMG__/paihangbang2.png" style="width:200px;margin-top:10px" >
+                <img src="__IMG__/paihangbang.png" style="width:200px;margin-top:10px" >
+            </div>
+        </div>
+    </div>
+    <!--排行榜结束-->
+</div>
+<script>
+    $(document).ready(function () {
+        $(".VerticalMenu>div>h5:first-child").click(function () {
+            $xz = $(".VerticalMenu>div>h5:first-child");
+            $($xz).not(this).children("i.fa-chevron-right").css({
+                "transform": "rotate(0deg)",
+                "color": "#000"
+            }).attr("leng", "")
+            if ($(this).children("i.fa-chevron-right").attr("leng") != "s") {
+                $(this).children("i.fa-chevron-right").attr("leng", "s")
+                $(this).children("i.fa-chevron-right").css({"transform": "rotate(90deg)", "color": "#000"})
+            } else {
+                $(this).children("i.fa-chevron-right").attr("leng", "")
+                $(this).children("i.fa-chevron-right").css({"transform": "rotate(0deg)", "color": "#000"})
+            }
+            $($xz).not($(this)).siblings("[name='xz']").stop().slideUp(400)
+            $(this).siblings("[name='xz']").slideToggle(400)
+
+        });
+    });
+
+</script>
+</body>
+</html>

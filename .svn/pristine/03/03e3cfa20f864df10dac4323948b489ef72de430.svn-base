@@ -1,0 +1,37 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+<div class="hxmain" style="text-align:center;">
+
+
+<br><br>
+
+
+ <!--   SR0 白糖 -->
+
+  		
+<span class="pName"><a href="index.php?code=AG0">白银</a></span>
+<br><br>
+<span class="pName"><a href="index.php?code=AU0">黄金</a></span>
+<br><br>
+<span class="pName"><a href="index.php?code=CU0">沪铜</a></span>
+<br><br>
+<span class="pName"><a href="index.php?code=SF0">硅铁</a></span>
+
+<br><br>
+<span class="pName"><a href="index.php?code=M0">豆粕</a></span>
+<br><br>
+<span class="pName"><a href="index.php?code=CF0">棉花</a></span>
+<br><br>
+<span class="pName"><a href="index.php?code=BU0">沥青</a></span>
+<br><br>
+<span class="pName"><a href="index.php?code=NI0">沪镍</a></span>
+<br><br>
+<span class="pName"><a href="index.php?code=C0">玉米</a></span>
+</div>
+</body>
+</html>

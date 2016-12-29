@@ -1,0 +1,639 @@
+<?php
+// 明细表，包括收支明细和交易明细
+namespace Home\Controller;
+class DetailedController extends CommonController {
+
+    //交易明细列表
+    public function dtrading(){
+    
+        $uid=$_SESSION['uid'];
+        //根据传来的时间查询对应的数据(只传递月份和时间便可以)
+        $mytoday=I('get.today');
+        // 判断是否是点击月份左右的按钮
+        if($mytoday){
+             // 判断是上个月的
+             if(I('get.no')==1) {
+                 $timestamp=strtotime($mytoday);
+                 $firstday=date('Y-m-01',strtotime(date('Y',$timestamp).'-'.(date('m',$timestamp)-1).'-01'));
+                 $lastday=date('Y-m-d',strtotime("$firstday +1 month -1 day"));
+             //判断如果是本月的，则下个月数据不存在。
+             }else if(I('get.no')==2&&$mytoday==date('Y-m-01', strtotime(date("Y-m-d")))){
+                 $firstday=date('Y-m-01', strtotime(date("Y-m-d")));
+                 $lastday=date('Y-m-d', strtotime("$BeginDate +1 month -1 day"));
+             //判断是下个月的
+             }else{
+                $timestamp=strtotime($mytoday);
+                 $arr=getdate($timestamp);
+                 if($arr['mon'] == 12){
+                    $year=$arr['year'] +1;
+                    $month=$arr['mon'] -11;
+                    $firstday=$year.'-0'.$month.'-01';
+                    $lastday=date('Y-m-d',strtotime("$firstday +1 month -1 day"));
+                 }else{
+                    $firstday=date('Y-m-01',strtotime(date('Y',$timestamp).'-'.(date('m',$timestamp)+1).'-01'));
+                    $lastday=date('Y-m-d',strtotime("$firstday +1 month -1 day"));
+                 }
+             }
+             
+             $begintime=$firstday;
+             $endtime=$lastday;
+        }else{
+            $begintime=date('Y-m-01', strtotime(date("Y-m-d")));
+            $endtime=date('Y-m-d', strtotime("$BeginDate +1 month -1 day"));
+         }
+        $tq=C('DB_PREFIX');
+        $last_day1 =  strtotime(date('Y-m-01', strtotime($begintime)));
+        $last_day2 =  strtotime(date('Y-m-d', strtotime($endtime)));
+        //$where = $last_day1.'<='.$tq.'order.selltime and '.$last_day2.'>='.$tq.'order.selltime';
+        //查询多条记录
+        $count = M('order')->join($tq.'productinfo on '.$tq.'order.pid='.$tq.'productinfo.pid')->where($tq.'order.uid='.$uid)->count();
+		$pagecount = 15;
+        $page = new \Think\Page($count , $pagecount);
+        $page->parameter = $row; //此处的row是数组，为了传递查询条件
+        $page->setConfig('first','首页');
+        $page->setConfig('prev','上一页');
+        $page->setConfig('next','下一页');
+        $page->setConfig('last','尾页');
+        //$page->setConfig('theme','%FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END%  第 '.I('p',1).' 页/共 %TOTAL_PAGE% 页 ( '.$pagecount.' 条/页 共 %TOTAL_ROW% 条)');
+        $show = $page->show();
+
+        $list = M('order')->join($tq.'productinfo on '.$tq.'order.pid='.$tq.'productinfo.pid')->where($tq.'order.uid='.$uid)->order($tq.'order.oid desc' )->
+        limit($page->firstRow.','.$page->listRows)->select();
+
+        //计算总收益
+        $trading['money']=M('order')->where($tq.'order.uid='.$uid.' and '.$tq.'order.ostaus=1')->sum('ploss');
+        //end
+        //总单数
+        $sumcount=M('order')->where($tq.'order.uid='.$uid)->count();
+        $trading['count']=$sumcount;
+        //总手数
+        $sumonumber=M('order')->where($tq.'order.uid='.$uid)->sum('onumber');
+        $trading['onumber']=$sumonumber;
+        //时间
+        $trading['time']=$last_day1;
+     
+        $this->assign('trading',$trading);
+		$this->assign('trading_time',date('Y-m-d',$trading['time']));
+        $this->assign('list',$list);
+        $this->assign('page',$show);
+        $this->display();//显示模板
+    }
+    //已平仓查询
+    public function unwind(){
+        
+        $uid=$_SESSION['uid'];
+        $tq=C('DB_PREFIX');
+        //查询多条记录
+        $count = M('order')->join($tq.'productinfo on '.$tq.'order.pid='.$tq.'productinfo.pid')->where($tq.'order.uid='.$uid.' and '.$tq.'order.ostaus=1')->count();
+        $pagecount = 15;
+        $page = new \Think\Page($count , $pagecount);
+        $page->parameter = $row; //此处的row是数组，为了传递查询条件
+        $page->setConfig('first','首页');
+        $page->setConfig('prev','上一页');
+        $page->setConfig('next','下一页');
+        $page->setConfig('last','尾页');
+        //$page->setConfig('theme','%FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END%  第 '.I('p',1).' 页/共 %TOTAL_PAGE% 页 ( '.$pagecount.' 条/页 共 %TOTAL_ROW% 条)');
+        $show = $page->show();
+
+        $list = M('order')->join($tq.'productinfo on '.$tq.'order.pid='.$tq.'productinfo.pid')->where($tq.'order.uid='.$uid.' and '.$tq.'order.ostaus=1')->order($tq.'order.oid desc' )->
+        limit($page->firstRow.','.$page->listRows)->select();
+
+        //计算总收益
+        $trading['money']=M('order')->where($tq.'order.uid='.$uid.' and '.$tq.'order.ostaus=1')->sum('ploss');
+        
+        //总单数
+        $sumcount=M('order')->where($tq.'order.uid='.$uid)->count();
+        $trading['count']=$sumcount;
+        //总手数
+        $sumonumber=M('order')->where($tq.'order.uid='.$uid)->sum('onumber');
+        $trading['onumber']=$sumonumber;
+
+        $this->assign('trading',$trading);
+        $this->assign('list',$list);
+        $this->assign('page',$show);
+        $this->display();
+    }
+
+    //未平仓查询
+    public function ununwind(){
+        
+        $uid=$_SESSION['uid'];
+        $tq=C('DB_PREFIX');
+        //查询多条记录
+        $count = M('order')->join($tq.'productinfo on '.$tq.'order.pid='.$tq.'productinfo.pid')->where($tq.'order.uid='.$uid.'and'.$tq.'order.ostaus=0')->count();
+        $pagecount = 15;
+        $page = new \Think\Page($count , $pagecount);
+        $page->parameter = $row; //此处的row是数组，为了传递查询条件
+        $page->setConfig('first','首页');
+        $page->setConfig('prev','上一页');
+        $page->setConfig('next','下一页');
+        $page->setConfig('last','尾页');
+        //$page->setConfig('theme','%FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END%  第 '.I('p',1).' 页/共 %TOTAL_PAGE% 页 ( '.$pagecount.' 条/页 共 %TOTAL_ROW% 条)');
+        $show = $page->show();
+
+        $list = M('order')->join($tq.'productinfo on '.$tq.'order.pid='.$tq.'productinfo.pid')->where($tq.'order.uid='.$uid.' and '.$tq.'order.ostaus=0')->order($tq.'order.oid desc' )->
+        limit($page->firstRow.','.$page->listRows)->select();
+
+        //计算总收益
+        $trading['money']=M('order')->where($tq.'order.uid='.$uid.' and '.$tq.'order.ostaus=1')->sum('ploss');
+        //end
+        //总单数
+        $sumcount=M('order')->where($tq.'order.uid='.$uid)->count();
+        $trading['count']=$sumcount;
+        //总手数
+        $sumonumber=M('order')->where($tq.'order.uid='.$uid)->sum('onumber');
+        $trading['onumber']=$sumonumber;
+
+        $this->assign('trading',$trading);
+        $this->assign('list',$list);
+        $this->assign('page',$show);
+        $this->display();
+        
+    }
+    //交易详情页
+    public function tradingid(){
+        $tq=C('DB_PREFIX');
+        $order=M('order')->join($tq.'productinfo on '.$tq.'order.pid='.$tq.'productinfo.pid')->join($tq.'catproduct on '.$tq.'productinfo.cid='.$tq.'catproduct.cid')->where($tq.'order.oid='.I('oid'))->find();
+        $orderid=$order;
+		//建仓金额
+        $orderid['jc']=floor(($order['buyprice']/30))*$order['onumber'];
+		//盈亏资金
+		if($order['ostyle']==0){
+						
+	       	$orderid['ykzj']=($order['sellprice']-$order['buyprice'])*$order['patx']*$order['onumber'];
+            $zijin=$orderid['jc']+$orderid['ykzj'];
+            if ($zijin<0) {
+                $orderid['ykzj']=-$orderid['jc'];
+            }
+		}else{
+						
+       		$orderid['ykzj']=($order['buyprice']-$order['sellprice'])*$order['patx']*$order['onumber'];
+            $zijin=$orderid['jc']+$orderid['ykzj'];
+            if ($zijin<0) {
+                $orderid['ykzj']=-$orderid['jc'];
+            }
+			
+		}
+		
+        
+        //百分比
+        $orderid['bfb']=$orderid['ykzj']/$orderid['jc'];
+        //本单盈余
+        //$orderid['bdyy']=$order['uprice']*$order['onumber']+$orderid['ykzj'];
+        //平仓收入
+        $orderid['pdsr']=$orderid['bdyy']-$order['feeprice']*$order['onumber'];
+        $this->assign('order',$orderid);
+        $this->display();
+    }
+     //收支明细列表(显示日志记录)
+    public function drevenue(){
+        $uid=$_SESSION['uid'];
+        $count =M('journal')->where('uid='.$uid)->count();
+        $pagecount = 5;
+        $page = new \Think\Page($count , $pagecount);
+        $page->parameter = $row; //此处的row是数组，为了传递查询条件
+        $page->setConfig('first','首页');
+        $page->setConfig('prev','上一页');
+        $page->setConfig('next','下一页');
+        $page->setConfig('last','尾页');
+        //$page->setConfig('theme','%FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END%  第 '.I('p',1).' 页/共 %TOTAL_PAGE% 页 ( '.$pagecount.' 条/页 共 %TOTAL_ROW% 条)');
+        $show = $page->show();
+        $list = M('journal')->where('uid='.$uid)->order('jtime desc' )->limit($page->firstRow.','.$page->listRows)->select(); 
+		
+		//减去进价
+		/*foreach($list as $k=>$val){
+			if($val['jtype'] == '平仓'  and $list[$k]['jincome'] > 0){
+				$list[$k]['jincome'] = $list[$k]['jincome'] - $val['number']*$val['juprice'];
+			}
+			
+		}*/
+        
+		$this->assign('list',$list);
+        $this->assign('page',$show);
+        $this->display();
+    }
+     //收支详细页
+    public function revenueid(){
+        $jno=I('jno');
+        $order=M('journal')->where('jno='.$jno)->find();
+        $this->assign('order',$order);
+        $this->display();
+    }
+    //购买商品，获取信息，生成订单表。
+    public function addorder(){
+        $tq=C('DB_PREFIX');
+        //数量
+        $mysum=I('post.mysum');
+        //所用费用
+        $myfy=I('post.myfy');
+        //方向
+        $myfx=I('post.myfx');
+         //手续费
+        $mysxf=I('post.mysxf');		
+        //体验卷值
+        $mytyj=I('post.mytyj');
+        //商品id
+        $mypid=I('post.mypid');
+        //入仓价
+        $mygetpeice=I('post.mygetpeice');
+        //获取选择的时间
+//        $region_id=I('post.region_id');
+        /*
+        * 添加订单表。修改对应体验卷价格的状态。添加日志表。扣除用户账号余额
+        * 添加订单之前再次判断账户余额（后续写）
+        */
+		$sunpd=$myfy+$mysxf;
+        $uid=$_SESSION['uid'];
+		$username = $_SESSION['husername'];
+        $porder = M('order')->where('uid='.$uid.' and pid='.$mypid.' and selltime=0')->select();
+		//获取账户余额
+        $user=M('accountinfo')->where('uid='.$uid)->find();
+        //根据商品id查询商品
+        $goods=M('productinfo')->where('pid='.$mypid)->find();
+        if(isset($porder)||$user['balance']<$sunpd)
+        {
+            $this->ajaxReturn(0); 
+            //echo "<script>alert('亲，您已经购买了此产品')</script>";
+        }else{
+        //随机生成订单号
+        $orderno=  $this->build_order_no();
+        $order=M('order');
+        //编写订单需要的数据
+        $data['uid']=$uid;
+        $data['pid']=$mypid;
+        if ($myfx=='涨') {
+           $data['ostyle']=0; 
+        }else{
+           $data['ostyle']=1; 
+        }
+        
+        $data['buytime']=date(time());
+        $data['selltime']=strtotime("next year");
+        $data['onumber']=$mysum;
+        $data['ostaus']=0;
+        $data['fee']=$mysxf;
+        if($mytyj==1){
+          $data['eid']=1;  
+//          $data['fee']=0;
+        }
+        $data['buyprice']=$mygetpeice;
+        $data['orderno']=$orderno;
+        $data['ptitle']=$goods['ptitle'];
+        $data['endprofit']=100;
+        $data['endloss']=100;
+        
+        $orderid = $order->add($data);
+        
+        if ($orderid) {
+            $onefine = 0;
+            $twofine = 0;
+            $uinfo = M('userinfo')->where('uid='.$uid)->find();
+            $wconfig = M('webconfig')->where('id=1')->find();
+            $onelevel = $wconfig['onelevel'];
+            $twolevel = $wconfig['twolevel'];
+            $Pscale = $wconfig['Pscale'];
+           if($uinfo['oid']!=""&&$uinfo['oid']!=0&&$mytyj==0)
+            {
+                $onefine =  $onelevel*$myfy*0.01;
+                $onemoney =  M('accountinfo')->where('uid='.$uinfo['oid'])->find();
+                $onetotal = $onemoney['balance']+$onefine;
+                M('accountinfo')->where('uid='.$uinfo['oid'])-> setField('balance', $onetotal);
+
+                //查询他是否还有上级
+                $twouinfo = M('userinfo')->where('uid='.$uinfo['oid'])->find();
+
+                if($twouinfo['oid']!=""&&$twouinfo['oid']!=0)
+                {
+                    $twofine =  $twolevel*$myfy*0.01;
+                    $twomoney =  M('accountinfo')->where('uid='.$twouinfo['oid'])->find();
+                    $twototal = $twofine+$twomoney['balance'];
+                    M('accountinfo')->where('uid='.$twouinfo['oid'])-> setField('balance', $twototal);
+
+                }
+            }
+            //扣除用户账号金额，若是体验卷则不扣除。
+            $accoun=M('accountinfo');
+            $user=$accoun->where('uid='.$uid)->find();
+            if($mytyj==0){
+                $accoun->aid=$user['aid'];
+                $accoun->uid=$uid;
+                $accoun->balance=$user['balance']-$myfy-$mysxf;
+                $accoun->save();
+            }
+            if($mytyj==1){
+               //查询使用体验卷的信息
+              $experienceinfo= M('experienceinfo');
+              $tiyan=$experienceinfo->join($tq.'experience on '.$tq.'experienceinfo.eid='.$tq.'experience.eid')->where($tq.'experienceinfo.uid='.$uid.' and '.date(time()).' < '.$tq.'experienceinfo.endtime and '.$tq.'experienceinfo.getstyle=0 and '.$tq.'experience.eprice>='.$goods['uprice'])->find();
+               $ste['getstyle']=1;
+               $experienceinfo->where('exid='.$tiyan['exid'])->save($ste);
+            }
+
+            //添加日志表
+            //随机生成订单号
+            $orderno=  $this->build_order_no();
+            $myjournal=M('journal');								
+            $journal['jno']=$orderno;										//订单号
+			$journal['uid'] = $uid;											//用户id
+			$journal['jtype'] = '建仓';										//类型	
+			$journal['jtime'] = date(time());								//操作时间
+			$journal['jincome'] = $myfy;									//收支金额【要予以删除】
+			$journal['number'] = $mysum;									//数量
+			$journal['remarks'] = $goods['ptitle'];							//产品名称	
+			$journal['balance'] = $user['balance']-$myfy-$mysxf;			//账户余额	
+			$journal['jstate'] = 0;											//盈利还是亏损
+			$journal['jusername'] = $username;								//用户名
+			$journal['jostyle'] = $data['ostyle'];							//涨、跌
+			$journal['juprice'] = $myfy/$mysum;								//单价
+			$journal['jfee'] = $mysxf;										//手续费
+			$journal['jbuyprice'] = $mygetpeice;							//入仓价
+			$journal['jaccess'] = ($myfy+$mysxf)-($myfy+$mysxf)*2;			//支持金额，求负数
+			$journal['oid'] = $orderid;										//改订单流水的订单id
+            $journal['onelevelfee'] = $onefine;//一级佣金
+            $journal['twolevelfee'] = $twofine;//二级佣金
+			
+            $myjournal->add($journal);
+			$order->where('oid='.$orderid)->setField('commission',$journal['balance']);
+        }else{
+            $orderid=0;
+        }
+        $this->ajaxReturn($orderid); 
+       }
+    }
+    
+    //判断是否购买过此类商品
+    public function judgment(){
+        //商品id
+        $mypid=I('post.mypid');
+        $uid=$_SESSION['uid'];
+        $porder = M('order')->where('uid='.$uid.' and pid='.$mypid.' and selltime=0')->select();
+        if(isset($porder))
+        {
+            $this->ajaxReturn(99); 
+            //echo "<script>alert('亲，您已经购买了此产品')</script>";
+        }else{
+            $this->ajaxReturn(100); 
+        }
+    }
+    //查询订单信息(接收修改后的订单，或者直接平仓，或者购买完后平仓，3中情况)
+    public function orderid(){
+        $tq=C('DB_PREFIX');
+        $orderid=I('orderid');
+        $order=M('order')->join($tq.'productinfo on '.$tq.'order.pid='.$tq.'productinfo.pid')
+        ->join($tq.'catproduct on '.$tq.'productinfo.cid='.$tq.'catproduct.cid')->where('oid='.$orderid)->find();
+        $shijian=$order['selltime']-$order['buytime'];
+        if ($shijian<=180) {
+            $order['shijian']=3;
+        }elseif ($shijian>=300 && $shijian<900) {
+            $order['shijian']=5;
+        }elseif ($shijian>=900 && $shijian<1800) {
+            $order['shijian']=15;
+        }elseif ($shijian>=1800 && $shijian<3600) {
+            $order['shijian']=30;
+        }else{
+            $order['shijian']=60;
+        }
+        $this->assign('order',$order);
+        $this->display();
+    }
+    //修改订单的止盈和止亏
+    public function edityk(){
+        $order=M('order');
+        $order->oid=I('post.oid');
+        $order->endprofit=I('post.zy');
+        $order->endloss=I('post.zk');
+        $order->save();
+        $this->redirect('Detailed/orderid', array('orderid' =>I('post.oid')));
+    }
+    //获取随时的动态值，计算盈亏金额和盈余数据
+    public function orderxq(){
+        $tq=C('DB_PREFIX');
+        $youjia=I('youjia');
+		$cid = I('cid');
+		if($youjia!=0){
+	        $order=M('order')->join($tq.'productinfo on '.$tq.'order.pid='.$tq.'productinfo.pid')->where($tq.'order.oid='.I('oid'))->find();
+	        $orderid=$order;
+	        //是否有体验券 0没有 1有
+	        if ($order['eid']==0) {
+	             $orderid['jc']=  floor($order['buyprice']/30) *$order['onumber'];
+//                $orderid['jc'] = $order['buyprice']*$order['onumber'];
+	            //判断是买张还是买跌。0涨，1跌
+	            if ( $orderid['ostyle']==0) {
+	                 //买涨盈亏资金
+	                 if($cid==1){
+	                 	$orderid['ykzj']=floor(($youjia-$order['buyprice']))*$order['onumber'];
+	                 }else{
+	                 	$orderid['ykzj']=floor(($youjia-$order['buyprice']))*$order['onumber'];
+	                 }
+					 
+	                 //本单盈余
+                    $orderid['bdyy']= floor($youjia - $order['buyprice'])*$order['onumber'];
+
+	                 //盈亏百分百
+	                 $orderid['ykbfb']=$orderid['ykzj']/ $orderid['jc']*100; 
+	            }else{
+	                //买跌盈亏资金
+	                if($cid==1){
+	                 	$orderid['ykzj']=floor(($order['buyprice']-$youjia))*$order['onumber'];
+               		}else{
+                 		$orderid['ykzj']=floor(($order['buyprice']-$youjia))*$order['onumber'];
+                 	}
+					
+	                 //本单盈余
+                    $orderid['bdyy']= floor($order['buyprice']-$youjia)*$order['onumber'];
+
+	                 $orderid['ykbfb']=$orderid['ykzj']/ $orderid['jc']*100;  
+	            }
+	        }else{
+	             $orderid['jc']=0;
+	            //判断是买张还是买跌。0涨，1跌
+	            if ( $orderid['ostyle']==0) {
+	                 //盈亏资金
+	                if($cid==1){
+	                 	$orderid['ykzj']=floor(($youjia-$order['buyprice']))*$order['onumber'];
+               		}else{
+                 		$orderid['ykzj']=floor(($youjia-$order['buyprice']))*$order['onumber'];
+                 	}
+	                 //本单盈余
+	                 //$orderid['bdyy']=round($orderid['jc']+$orderid['ykzj'],2);
+
+
+
+					 if($orderid['ykzj'] > 0 ){
+
+                         $orderid['bdyy']= floor($order['buyprice']-$youjia)*$order['onumber'];
+
+					}else{
+						$orderid['bdyy']=0;
+
+					}
+					
+	                 //盈亏百分百
+	                 $orderid['ykbfb']=$orderid['ykzj']/ $orderid['jc']*100;
+	            }else{
+	                //盈亏资金
+					if($cid==1){
+	                 	$orderid['ykzj']=floor(($order['buyprice']-$youjia))*$order['onumber'];
+               		}else{
+                 		$orderid['ykzj']=floor(($order['buyprice']-$youjia))*$order['onumber'];
+                 	}
+
+	                 //盈亏百分百
+	                 $orderid['ykbfb']=$orderid['ykzj']/ $orderid['jc']*100; 
+	                 if ($orderid['ykzj']>0) {
+	                   //  $orderid['ykzj']=0;
+
+                         //本单盈余
+                         $orderid['bdyy']= $orderid['ykzj'];
+	                 } else{
+                         $orderid['bdyy']=0;
+                     }
+	            }
+	        }
+	        
+	        $this->ajaxReturn($orderid);
+        }
+    }
+
+    //平仓
+    public function updateore(){
+         //获取账户余额
+        $uid=$_SESSION['uid'];
+		$users = D('userinfo');
+		$username = $_SESSION['husername'];
+        $user=M('accountinfo')->where('uid='.$uid)->find();
+        //获取传递过来的值
+        $oid=I('post.oid');
+        //现在油价
+        $youjia=I('post.youjia');
+        //查询此订单是否已经平仓过。
+        $strye=M('order')->where('oid='.$oid)->find();
+        
+        if($youjia>0&$strye['ostaus']==0)
+        {  
+        //结余的金额，需要给当前用户的账户添加
+        $bdyy=I('post.bdyy');
+         //建仓金额
+        $jiancj=I('post.jiancj'); 
+        //盈亏资金
+        $ykzj=I('post.ykzj'); 
+		//产品单价
+		$uprice = I('post.uprice');
+        //先修改订单信息，返回成功信息后修改账户余额和添加日志记录
+        $orderno= $this->build_order_no();
+        $tq=C('DB_PREFIX');
+        $myorder=M('order')->join($tq.'productinfo on '.$tq.'order.pid='.$tq.'productinfo.pid')->where($tq.'order.oid='.$oid)->find();
+        if ($myorder['eid']==1) {
+            if ($ykzj>=0) {
+               $ykzj=$ykzj;
+            }else{
+               $ykzj=0;
+            }
+        }
+        $order=M('order');
+        $order->oid=$oid;
+        $order->selltime=date(time());
+        $order->ostaus=1;
+        $order->sellprice=$youjia;
+        //盈亏资金
+        $order->ploss=$ykzj;
+        //手续费
+        $fee = $myorder['feeprice']*$myorder['onumber'];
+        $order->fee=$fee;
+        
+        $msg= $order->save();				
+        if ($msg) {
+            $myprice=M('accountinfo')->where('uid='.$uid)->find();
+            $acco= M('accountinfo');
+            $acco->uid=$uid;
+            $acco->balance=$myprice['balance']+$bdyy;
+            $acco->save();
+			//根据商品id查询商品
+            $goods=M('productinfo')->where('pid='.$myorder['pid'])->find();
+			//用户亏损了，返点
+            //添加平仓日志表
+            //随机生成订单号
+            $myjournal=M('journal');
+			$journal['jno']=$orderno;										//订单号
+			$journal['uid'] = $uid;											//用户id
+			$journal['jtype'] = '平仓';										//类型	
+			$journal['jtime'] = date(time());								//操作时间
+			$journal['jincome'] = $bdyy;									//收支金额【要予以删除】
+			$journal['number'] = $myorder['onumber'];						//数量			
+			$journal['remarks'] = $goods['ptitle'];							//产品名称	
+			$journal['balance'] = $user['balance']+$bdyy;					//账户余额	
+			if ($bdyy>$jiancj){
+                  $journal['jstate']=1;										//盈利还是亏损
+            }else{
+                  $journal['jstate']=0;
+            }			
+			$journal['jusername'] = $username;								//用户名
+			$journal['jostyle'] = $myorder['ostyle'];						//涨、跌
+			$journal['juprice'] = $uprice;									//单价
+			$journal['jfee'] = $fee;										//手续费
+			$journal['jbuyprice'] = $myorder['buyprice'];					//入仓价
+			$journal['jsellprice'] = $youjia;								//平仓价
+			$journal['jaccess'] = $bdyy;									//出入金额
+			$journal['jploss'] = $ykzj;										//出入金额
+			$journal['oid'] = $oid;											//改订单流水的订单id
+			$journal['explain'] = $otype.'平仓';
+            $myjournal->add($journal);
+			$order->where('oid='.$oid)->setField('commission',$journal['balance']);
+        }else{
+           $msg="平仓失败，稍后平仓";
+        }
+
+           $this->ajaxReturn($msg); 
+        }else{
+           $this->ajaxReturn(99);  
+        }       
+    }
+    public function gettime(){
+         $this->ajaxReturn(time()); 
+    }
+    //随机生成订单编号
+    function build_order_no(){
+        return date(time()).substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 3);
+    }
+
+    //l立即平仓
+    public function setClosePosition(){
+
+        $orderno=$_POST['orderno'];
+        $buytime=$_POST['buytime'];
+        $sellType=$_POST['sellType'];
+
+        header( "Content-type:text/html;charset=utf-8" );
+        $db_host = 'localhost';
+        $db_name = 'vpan';
+        $db_user = 'root';
+        $db_pwd = 'xycj_1125_yun';//xycj_1125_yun
+
+//面向过程方式的连接方式
+
+        $mysqli = mysqli_connect($db_host, $db_user, $db_pwd, $db_name);
+
+//判断是否连接成功
+        if(!$mysqli ){
+
+            echo mysqli_connect_error();
+        }
+        echo '连接成功';
+        //设置数据库写入的编码方式UTF8
+        mysqli_query($mysqli, "SET NAMES UTF8");
+
+        //$time = time();
+
+        $sql = "UPDATE wp_order SET selltime = '$buytime',SellType='$sellType' WHERE wp_order.orderno = '$orderno'";
+        $result = $mysqli->query($sql);
+        if($result === false){//执行失败
+            echo $mysqli->error;
+            echo $mysqli->errno;
+        }
+
+//关闭连接
+        mysqli_close($mysqli);
+
+//        $this->ajaxReturn($buytime);
+    }
+    
+}

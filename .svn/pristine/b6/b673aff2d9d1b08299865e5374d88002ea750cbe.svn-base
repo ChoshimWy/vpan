@@ -1,0 +1,16 @@
+/* css reset www.admin10000.com */
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td { margin:0; padding:0; }
+/**{ margin:0; padding:0; color:#333;}*/
+body{ font: 12px/1.5 "Microsoft Yahei","Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif; }
+/*h1, h2, h3, h4, h5, h6 { font-weight:normal; font-size:100%; }*/
+h3{display: block;font-size: 1.5em;webkit-margin-before:1em;webkit-margin-after: 1em;webkit-margin-start: 0px;webkit-margin-end: 0px;}
+a{  text-decoration:none; cursor: pointer;}
+a:hover { text-decoration:none; cursor:pointer; }
+table { border-collapse:collapse; }
+img { border:none; }
+html {overflow-y: scroll;} 
+.clearfix:after {content: "."; display: block; height:0; clear:both; visibility: hidden;}
+.clearfix { *zoom:1; }
+ol,ul,li { list-style-type:none; }
+input,select,button{border: none; -ms-border:none;}
+

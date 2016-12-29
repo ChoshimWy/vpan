@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>支付</title>
+<style type="text/css">
+	body{width: 100%; background-color: #f9f9f9; border: 1px solid #666666;}
+</style>
+</head>
+<body onLoad="document.dinpayForm.submit();">
+<form name="dinpayForm" method="post"    action="https://pay.dinpay.com/gateway?input_charset=UTF-8" target="_self">
+    {$form}
+</form>
+
+<h3><span><</span>支付订单</h3>
+<div></div>
+
+</body>
+</html>
